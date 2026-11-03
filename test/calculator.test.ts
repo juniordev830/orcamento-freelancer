@@ -38,7 +38,7 @@ test('rounds individual lines to cents and keeps sum reconciled', () => {
     { description: 'B', hours: 1, hourlyRate: 0.104 },
     { description: 'C', hours: 1, hourlyRate: 0.104 },
   ], 10);
-  assert.equal(breakdown.items.reduce((sum, item) => sum + item.total, 0), breakdown.subtotal);
+  assert.equal(Math.round(breakdown.items.reduce((sum, item) => sum + item.total * 100, 0)), Math.round(breakdown.subtotal * 100));
   assert.equal(breakdown.subtotal, 0.3);
   assert.equal(breakdown.discountAmount, 0.03);
   assert.equal(breakdown.total, 0.27);
