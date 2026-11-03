@@ -4,11 +4,11 @@ Propostas de serviços calculadas por horas e despesas.
 
 ## Estado atual
 
-Projeto em planejamento. Este repositório contém a definição do projeto; ainda não há aplicação executável, interface ou testes implementados.
+MVP executável em branch de desenvolvimento, com testes automatizados. Calculadora de orçamento com horas, despesas e desconto. Ainda não há interface, emissão de proposta ou persistência.
 
-## Tecnologias propostas
+## Tecnologias implementadas
 
-TypeScript, React e Node.js. A escolha será confirmada ao iniciar a implementação.
+Node.js 20+ e TypeScript.
 
 ## Escopo da primeira versão
 
@@ -25,7 +25,15 @@ TypeScript, React e Node.js. A escolha será confirmada ao iniciar a implementa�
 
 ## Desenvolvimento
 
-As funcionalidades acima são planejadas. Os comandos de instalação e a estrutura do código serão documentados junto da primeira implementação. Não há integrações externas ou serviços ativos nesta etapa.
+Execute na raiz do repositório:
+
+```bash
+npm install
+npm test
+npm run build
+```
+
+O GitHub Actions executa a validação em pushes e pull requests. Este é um núcleo demonstrativo; as funcionalidades ainda marcadas como pendentes na lista acima continuam planejadas.
 
 ## Privacidade e configuração
 
