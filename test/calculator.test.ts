@@ -6,7 +6,7 @@ test('calculates line items and discount', () => {
   assert.equal(calculateBudget([
     { description: 'Desenvolvimento', hours: 10, hourlyRate: 80 },
     { description: 'Deslocamento', hours: 2, hourlyRate: 50, expenses: 20 },
-  ], 10), 810);
+  ], 10), 828);
 });
 
 test('rejects invalid budget values', () => {
