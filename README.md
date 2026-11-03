@@ -1,31 +1,29 @@
 # Orçamento Freelancer
 
-Propostas de serviços calculadas por horas e despesas.
+Biblioteca de domínio em **TypeScript** para calcular propostas por horas, valor/hora, despesas e descontos.
 
-## Estado atual
+## Funcionalidades
 
-MVP executável em branch de desenvolvimento, com testes automatizados. Calculadora de orçamento com horas, despesas e desconto. Ainda não há interface, emissão de proposta ou persistência.
+- `calculateBudget(lines, discountPct)`: devolve o total da proposta, compatível com o uso anterior.
+- `calculateBudgetBreakdown(lines, discountPct)`: devolve uma memória de cálculo com itens, subtotal, desconto percentual, valor descontado e total.
+- Valores financeiros são calculados em **centavos inteiros** após arredondar cada item. O desconto é arredondado para centavos, assegurando que `total = subtotal - discountAmount` no relatório.
+- Valida descrições, quantidades, taxas, despesas, descontos de 0% a 100%, overflow e valores não finitos.
 
-## Tecnologias implementadas
+## Exemplo
 
-Node.js 20+ e TypeScript.
+```ts
+import { calculateBudgetBreakdown } from './src/calculator.js';
 
-## Escopo da primeira versão
+const proposal = calculateBudgetBreakdown([
+  { description: 'Desenvolvimento de API', hours: 10, hourlyRate: 80 },
+  { description: 'Deslocamento', hours: 2, hourlyRate: 50, expenses: 20 },
+], 10);
 
-- [ ] Cadastrar itens e horas
-- [x] Calcular totais e descontos
-- [ ] Exportar proposta em PDF
+console.log(proposal);
+// items: 800 e 120, subtotal: 920, desconto: 92, total: 828
+```
 
-## Critérios para concluir a primeira versão
-
-- [ ] Implementar o fluxo principal com validação de entradas e tratamento de erros.
-- [ ] Documentar instalação, configuração e execução com comandos reproduzíveis.
-- [ ] Adicionar exemplos de uso e dados fictícios.
-- [ ] Verificar os casos principais e limites e registrar os resultados.
-
-## Desenvolvimento
-
-Execute na raiz do repositório:
+## Testar e compilar
 
 ```bash
 npm install
@@ -33,12 +31,12 @@ npm test
 npm run build
 ```
 
-O GitHub Actions executa a validação em pushes e pull requests. Este é um núcleo demonstrativo; as funcionalidades ainda marcadas como pendentes na lista acima continuam planejadas.
+O GitHub Actions executa os testes e a compilação em pushes e pull requests. Os dados do exemplo são fictícios.
 
-## Privacidade e configuração
+## Escopo e limitações
 
-Usar dados fictícios nos exemplos e manter senhas, tokens, arquivos pessoais e credenciais fora do controle de versão.
+Trata-se de uma biblioteca em memória, sem formulário, geração de PDF, banco, emissão fiscal ou persistência de propostas. O cálculo usa `number` do JavaScript e arredondamento em centavos por item, **não aritmética decimal exata**, e não substitui um sistema de contabilidade. Para cobrança com regras tributárias ou conciliação bancária, será necessário definir moeda, encargos, precisão e legislação aplicável.
 
-## Licença
+Não versionar dados pessoais ou credenciais.
 
-Ainda não definida.
+Licença: ainda não definida.
