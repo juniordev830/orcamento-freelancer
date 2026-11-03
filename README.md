@@ -13,7 +13,7 @@ Node.js 20+ e TypeScript.
 ## Escopo da primeira versão
 
 - [ ] Cadastrar itens e horas
-- [ ] Calcular totais e descontos
+- [x] Calcular totais e descontos
 - [ ] Exportar proposta em PDF
 
 ## Critérios para concluir a primeira versão
