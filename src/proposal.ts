@@ -73,9 +73,13 @@ export function percentageToBasisPoints(value: number, name = 'percentage'): num
 
 function requireName(value: unknown, name: string, limit: number): string {
   if (typeof value !== 'string') throw new RangeError(name + ' must be a string');
+  // Reject control characters before trimming so leading newlines are not hidden.
+  if (/[\u0000-\u001F]/.test(value)) {
+    throw new RangeError(name + ' contains control characters');
+  }
   const result = value.trim();
-  if (!result || result.length > limit || /[\u0000-\u001F]/.test(result)) {
-    throw new RangeError(name + ' is empty, too long, or contains control characters');
+  if (!result || result.length > limit) {
+    throw new RangeError(name + ' is empty or too long');
   }
   return result;
 }
