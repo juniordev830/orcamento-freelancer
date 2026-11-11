@@ -94,11 +94,16 @@ function toCents(value: number): number {
 }
 
 function distributeCents(totalCents: number, weights: number[]): number[] {
-  // Largest-remainder allocation keeps exact totals without losing cents.
+  // Integer arithmetic avoids floating-point ties at large monetary amounts.
+  // Both inputs are bounded integers; BigInt keeps quotient and remainder exact.
+  const denominator = 10_000n;
   const parts = weights.map((weight, index) => {
-    const exact = totalCents * weight / 10_000;
-    const floor = Math.floor(exact);
-    return { index, floor, remainder: exact - floor };
+    const weighted = BigInt(totalCents) * BigInt(weight);
+    return {
+      index,
+      floor: Number(weighted / denominator),
+      remainder: Number(weighted % denominator),
+    };
   });
   let unallocated = totalCents - parts.reduce((sum, part) => sum + part.floor, 0);
   const rank = [...parts].sort(
