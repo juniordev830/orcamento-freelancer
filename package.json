@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": { "build": "tsc", "test": "tsx --test test/*.test.ts" },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx --test test/*.test.ts",
+    "proposal": "node cli/proposal.mjs",
+    "demo": "npm run build && node cli/proposal.mjs examples/proposta-exemplo.json"
+  },
   "devDependencies": {
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }
