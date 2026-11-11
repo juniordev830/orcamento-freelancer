@@ -42,7 +42,7 @@ Para criar sua própria proposta, copie o JSON de exemplo para um arquivo privad
 - Desconto: percentual sobre o subtotal.
 - Contingência: percentual sobre o subtotal depois do desconto.
 - Etapas de pagamento: os percentuais devem somar exatamente **100%**.
-- A divisão utiliza o método dos maiores restos para que a soma das parcelas seja exatamente igual ao total, inclusive com centavos.
+- A divisão utiliza o método dos maiores restos com **aritmética inteira exata**, sem arredondamentos intermediários de ponto flutuante, para que a soma das parcelas seja exatamente igual ao total, inclusive em valores altos. Em empates, vence a etapa cadastrada primeiro.
 - O prazo informado é em dias corridos, de 1 a 365 dias. Datas usam o formato AAAA-MM-DD.
 
 **Atenção:** isso não calcula impostos brasileiros, não emite notas fiscais e não substitui contrato ou aconselhamento contábil. A implementação atual **não exporta PDF**; o Markdown gerado pode ser convertido posteriormente em ferramentas apropriadas.
