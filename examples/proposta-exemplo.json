@@ -1,0 +1,20 @@
+{
+  "id": "GX-2026-001",
+  "client": "Cliente Demonstrativo",
+  "project": "Painel de acompanhamento de tarefas",
+  "issuedOn": "2026-11-07",
+  "validDays": 30,
+  "lines": [
+    { "description": "Implementação da API", "hours": 16, "hourlyRate": 90 },
+    { "description": "Painel web", "hours": 20, "hourlyRate": 85, "expenses": 70 },
+    { "description": "Documentação e testes", "hours": 6, "hourlyRate": 80 }
+  ],
+  "discountPct": 5,
+  "contingencyPct": 2,
+  "paymentStages": [
+    { "title": "Início", "percentage": 30 },
+    { "title": "Entrega intermediária", "percentage": 40 },
+    { "title": "Aceite final", "percentage": 30 }
+  ],
+  "notes": "Exemplo fictício para demonstrar a geração de propostas. Não é oferta comercial real."
+}

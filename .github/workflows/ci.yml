@@ -13,3 +13,13 @@ jobs:
       - run: npm install
       - run: npm test
       - run: npm run build
+      - name: Smoke-test proposal CLI
+        run: |
+          node cli/proposal.mjs examples/proposta-exemplo.json > "$RUNNER_TEMP/proposal.md"
+          grep -q "Proposta de Serviços" "$RUNNER_TEMP/proposal.md"
+          node cli/proposal.mjs examples/proposta-exemplo.json "$RUNNER_TEMP/output.md"
+          test -s "$RUNNER_TEMP/output.md"
+          if node cli/proposal.mjs examples/proposta-exemplo.json "$RUNNER_TEMP/output.md"; then
+            echo "CLI should not overwrite an existing file"
+            exit 1
+          fi
