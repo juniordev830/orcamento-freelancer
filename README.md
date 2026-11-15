@@ -6,6 +6,8 @@ Propostas de serviços calculadas por horas e despesas.
 
 MVP executável em branch de desenvolvimento, com testes automatizados. Calculadora de orçamento com horas, despesas e desconto. Ainda não há interface, emissão de proposta ou persistência.
 
+O desconto é aplicado ao subtotal de horas e despesas. O arredondamento para centavos ocorre uma vez, no total final, com meio centavo arredondado para cima.
+
 ## Tecnologias implementadas
 
 Node.js 20+ e TypeScript.
