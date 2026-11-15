@@ -13,3 +13,27 @@ test('rejects invalid budget values', () => {
   assert.throws(() => calculateBudget([{ description: '', hours: 1, hourlyRate: 10 }]), RangeError);
   assert.throws(() => calculateBudget([{ description: 'Dev', hours: -1, hourlyRate: 10 }]), RangeError);
 });
+
+test('rounds half a cent up after multiplying hours by the hourly rate', () => {
+  assert.equal(calculateBudget([{ description: 'Dev', hours: 0.3, hourlyRate: 3.35 }]), 1.01);
+  assert.equal(calculateBudget([{ description: 'Dev', hours: 1, hourlyRate: 10.075 }]), 10.08);
+});
+
+test('rounds only after all expenses and the discount have been applied', () => {
+  const lines = [
+    { description: 'Dev', hours: 1, hourlyRate: 1.115 },
+    { description: 'Expense', hours: 0, hourlyRate: 0, expenses: 0.01 },
+  ];
+  assert.equal(calculateBudget(lines, 10), 1.01);
+  assert.equal(calculateBudget(lines.reverse(), 10), 1.01);
+  assert.equal(calculateBudget(lines, 100), 0);
+});
+
+test('handles scientific notation, finite large totals, and overflow', () => {
+  assert.equal(calculateBudget([{ description: 'Dev', hours: 1e-8, hourlyRate: 1e8 }]), 1);
+  assert.equal(calculateBudget([{ description: 'Dev', hours: 1, hourlyRate: 1e308 }]), 1e308);
+  assert.throws(
+    () => calculateBudget([{ description: 'Dev', hours: 2, hourlyRate: 1e308 }]),
+    RangeError,
+  );
+});

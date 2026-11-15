@@ -12,6 +12,8 @@ Ferramenta local em **TypeScript e Node.js 20+** para gerar propostas de serviç
 - Exporta a proposta em **Markdown**, com caracteres especiais escapados.
 - Inclui testes automatizados e uma CLI que evita sobrescrever propostas existentes.
 
+Na calculadora `calculateBudget`, o desconto é aplicado ao subtotal de horas e despesas. O arredondamento para centavos ocorre uma vez, no total final, com meio centavo arredondado para cima.
+
 ## Instalar e testar
 
 ```bash
@@ -63,3 +65,7 @@ Execute localmente e mantenha contratos, valores de clientes e dados confidencia
 ## Licença
 
 Ainda não definida.
+
+## Documentação para manutenção
+
+O [guia de validação](docs/GUIA_DE_VALIDACAO.md) contém testes de regressão, pontos críticos e critérios para revisar a próxima alteração.
