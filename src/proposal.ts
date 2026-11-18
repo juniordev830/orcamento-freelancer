@@ -152,6 +152,11 @@ export function createProposal(input: ProposalInput): Proposal {
   if (!Number.isInteger(input.validDays) || input.validDays < 1 || input.validDays > 365) {
     throw new RangeError('validDays must be between 1 and 365');
   }
+  const expiration = new Date(issuedOn.getTime() + input.validDays * DAY_MS);
+  if (expiration.getUTCFullYear() > 9999) {
+    throw new RangeError('expiration date must use a four-digit year');
+  }
+  const expiresOn = expiration.toISOString().slice(0, 10);
   if (!Array.isArray(input.lines) || input.lines.length < 1 || input.lines.length > 100) {
     throw new RangeError('proposal must contain between 1 and 100 budget items');
   }
@@ -189,8 +194,6 @@ export function createProposal(input: ProposalInput): Proposal {
     { title: 'Entrega', percentage: 50 },
   ];
   const stages = createPaymentPlan(totalCents, input.paymentStages ?? defaultStages);
-  const expiresOn = new Date(issuedOn.getTime() + input.validDays * DAY_MS)
-    .toISOString().slice(0, 10);
   return {
     id, client, project, issuedOn: input.issuedOn, expiresOn,
     validDays: input.validDays, notes, items,
