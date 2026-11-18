@@ -40,6 +40,13 @@ function roundToCents(value: Decimal): bigint {
   return (value.coefficient + divisor / 2n) / divisor;
 }
 
+export function roundMoneyToCents(value: number): number {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new RangeError('money value is invalid');
+  }
+  return Number(roundToCents(toDecimal(value)));
+}
+
 export function calculateBudget(lines: BudgetLine[], discountPct = 0): number {
   if (!Number.isFinite(discountPct) || discountPct < 0 || discountPct > 100) {
     throw new RangeError('discountPct must be between 0 and 100');

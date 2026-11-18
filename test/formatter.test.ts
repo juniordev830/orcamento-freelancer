@@ -55,6 +55,19 @@ test('generates a proposal with totals and payment stages', () => {
   assert.match(markdown, /não constitui|Não constitui/);
 });
 
+test('uses decimal rounding for hourly rates and expenses displayed in Markdown', () => {
+  const proposal = createProposal({
+    id: 'X1',
+    client: 'Cliente',
+    project: 'Projeto',
+    issuedOn: '2026-11-07',
+    validDays: 7,
+    lines: [{ description: 'Serviço', hours: 1, hourlyRate: 1.005, expenses: 2.135 }],
+  });
+  assert.equal(proposal.items[0].totalCents, 314);
+  assert.match(proposalMarkdown(proposal), /\| Serviço \| 1 \| R\$\s*1,01 \| R\$\s*2,14 \| R\$\s*3,14 \|/);
+});
+
 test('escapes project-controlled values in rendered table rows', () => {
   const proposal = createProposal({
     id: 'X1',
