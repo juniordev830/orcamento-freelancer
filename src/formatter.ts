@@ -1,3 +1,4 @@
+import { roundMoneyToCents } from './calculator.js';
 import type { Proposal } from './proposal.js';
 
 const currency = new Intl.NumberFormat('pt-BR', {
@@ -51,8 +52,8 @@ export function proposalMarkdown(proposal: Proposal): string {
     lines.push([
       '| ' + markdownText(item.description),
       String(item.hours),
-      moneyBRL(Math.round(item.hourlyRate * 100)),
-      moneyBRL(Math.round((item.expenses ?? 0) * 100)),
+      moneyBRL(roundMoneyToCents(item.hourlyRate)),
+      moneyBRL(roundMoneyToCents(item.expenses ?? 0)),
       moneyBRL(item.totalCents) + ' |',
     ].join(' | '));
   }
