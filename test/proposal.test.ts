@@ -125,6 +125,15 @@ test('detects expiry only after the last valid day', () => {
   assert.throws(() => isProposalExpired(proposal, '2026-02-30'), RangeError);
 });
 
+test('keeps the last representable expiration date and rejects larger years', () => {
+  const proposal = createProposal({ ...demo, issuedOn: '9999-12-30', validDays: 1 });
+  assert.equal(proposal.expiresOn, '9999-12-31');
+  assert.equal(isProposalExpired(proposal, '9999-12-31'), false);
+  assert.throws(() => createProposal({
+    ...demo, issuedOn: '9999-12-30', validDays: 2,
+  }), /expiration date/);
+});
+
 test('zero discount and contingency still yield a well-defined proposal', () => {
   const proposal = createProposal({
     ...demo,
