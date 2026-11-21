@@ -54,7 +54,7 @@ test('calculateBudget validates collection and line shapes consistently', () => 
 test('rejects control characters or overly long item descriptions', () => {
   const line = { description: 'Dev', hours: 2, hourlyRate: 50 };
   assert.equal(calculateBudget([line]), 100);
-  assert.throws(() => calculateBudget([{ ...line, description: 'A\\nB' }]), RangeError);
+  assert.throws(() => calculateBudget([{ ...line, description: 'A\nB' }]), RangeError);
   assert.throws(() => calculateBudget([{ ...line, description: 'A'.repeat(161) }]), RangeError);
   assert.equal(calculateBudget([{ ...line, description: 'A'.repeat(160) }]), 100);
 });
