@@ -44,15 +44,25 @@ export function roundMoneyToCents(value: number): number {
   if (!Number.isFinite(value) || value < 0) {
     throw new RangeError('money value is invalid');
   }
-  return Number(roundToCents(toDecimal(value)));
+  const cents = roundToCents(toDecimal(value));
+  if (cents > BigInt(Number.MAX_SAFE_INTEGER)) {
+    throw new RangeError('money value exceeds safe integer cents');
+  }
+  return Number(cents);
 }
 
 export function calculateBudget(lines: BudgetLine[], discountPct = 0): number {
+  if (!Array.isArray(lines) || lines.length > 10_000) {
+    throw new RangeError('lines must be an array with up to 10000 items');
+  }
   if (!Number.isFinite(discountPct) || discountPct < 0 || discountPct > 100) {
     throw new RangeError('discountPct must be between 0 and 100');
   }
   const subtotal = lines.reduce<Decimal>((total, line) => {
-    if (!line.description.trim() || !Number.isFinite(line.hours) || line.hours < 0 ||
+    if (!line || typeof line.description !== 'string' || !line.description.trim() ||
+        line.description.trim().length > 160 ||
+        [...line.description].some((character) => character.charCodeAt(0) < 32) ||
+        !Number.isFinite(line.hours) || line.hours < 0 ||
         !Number.isFinite(line.hourlyRate) || line.hourlyRate < 0 ||
         !Number.isFinite(line.expenses ?? 0) || (line.expenses ?? 0) < 0) {
       throw new RangeError('invalid budget line');

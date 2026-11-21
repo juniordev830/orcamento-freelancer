@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { calculateBudget } from '../src/calculator.js';
+import { calculateBudget, roundMoneyToCents } from '../src/calculator.js';
 
 test('calculates line items and discount', () => {
   assert.equal(calculateBudget([
@@ -36,4 +36,25 @@ test('handles scientific notation, finite large totals, and overflow', () => {
     () => calculateBudget([{ description: 'Dev', hours: 2, hourlyRate: 1e308 }]),
     RangeError,
   );
+});
+
+test('roundMoneyToCents rejects values beyond exact integer-cent precision', () => {
+  assert.equal(roundMoneyToCents(0.015), 2);
+  assert.equal(roundMoneyToCents(123.45), 12345);
+  assert.throws(() => roundMoneyToCents(1e15), RangeError);
+});
+
+test('calculateBudget validates collection and line shapes consistently', () => {
+  assert.throws(() => calculateBudget(null as unknown as []), RangeError);
+  assert.throws(() => calculateBudget([null] as unknown as []), RangeError);
+  assert.throws(() => calculateBudget([{ description: 5, hours: 1, hourlyRate: 10 }] as unknown as []), RangeError);
+  assert.throws(() => calculateBudget(Array(10_001).fill({ description: 'Dev', hours: 1, hourlyRate: 1 })), RangeError);
+});
+
+test('rejects control characters or overly long item descriptions', () => {
+  const line = { description: 'Dev', hours: 2, hourlyRate: 50 };
+  assert.equal(calculateBudget([line]), 100);
+  assert.throws(() => calculateBudget([{ ...line, description: 'A\nB' }]), RangeError);
+  assert.throws(() => calculateBudget([{ ...line, description: 'A'.repeat(161) }]), RangeError);
+  assert.equal(calculateBudget([{ ...line, description: 'A'.repeat(160) }]), 100);
 });

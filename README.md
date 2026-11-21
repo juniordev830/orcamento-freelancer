@@ -69,3 +69,5 @@ Ainda não definida.
 ## Documentação para manutenção
 
 O [guia de validação](docs/GUIA_DE_VALIDACAO.md) contém testes de regressão, pontos críticos e critérios para revisar a próxima alteração.
+\nA função utilitária `roundMoneyToCents` recusa valores cuja conversão para centavos ultrapasse a precisão inteira exata do JavaScript; a calculadora básica também valida a estrutura da lista e dos itens antes de iniciar operações monetárias.\n
+Descrições da calculadora básica aceitam até 160 caracteres não vazios e rejeitam controles como tabulação e quebra de linha; o mesmo limite já é aplicado às descrições de itens de propostas completas.
