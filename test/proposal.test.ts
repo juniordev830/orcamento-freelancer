@@ -118,6 +118,13 @@ test('rejects invalid customer, project, budget and validity data', () => {
   for (const input of invalid) assert.throws(() => createProposal(input));
 });
 
+test('rejects invisible bidi controls in notes while preserving normal paragraphs', () => {
+  for (const notes of ['\u202eReverse', 'A\u2066B', 'Invalid\u007f']) {
+    assert.throws(() => createProposal({ ...demo, notes }), RangeError);
+  }
+  assert.equal(createProposal({ ...demo, notes: 'Entrega\nAprovação' }).notes, 'Entrega\nAprovação');
+});
+
 test('detects expiry only after the last valid day', () => {
   const proposal = createProposal(demo);
   assert.equal(isProposalExpired(proposal, '2026-12-07'), false);
