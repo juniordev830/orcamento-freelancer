@@ -51,6 +51,14 @@ test('calculateBudget validates collection and line shapes consistently', () => 
   assert.throws(() => calculateBudget(Array(10_001).fill({ description: 'Dev', hours: 1, hourlyRate: 1 })), RangeError);
 });
 
+test('rejects invisible direction controls in financial descriptions', () => {
+  const item = { description: 'Dev', hours: 2, hourlyRate: 100 };
+  for (const description of ['\u202EDev', 'Dev\u2066', 'Dev\u007F']) {
+    assert.throws(() => calculateBudget([{ ...item, description }]), RangeError);
+  }
+  assert.equal(calculateBudget([{ ...item, description: 'Revisão de código' }]), 200);
+});
+
 test('rejects control characters or overly long item descriptions', () => {
   const line = { description: 'Dev', hours: 2, hourlyRate: 50 };
   assert.equal(calculateBudget([line]), 100);

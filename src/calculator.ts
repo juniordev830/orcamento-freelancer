@@ -61,7 +61,9 @@ export function calculateBudget(lines: BudgetLine[], discountPct = 0): number {
   const subtotal = lines.reduce<Decimal>((total, line) => {
     if (!line || typeof line.description !== 'string' || !line.description.trim() ||
         line.description.trim().length > 160 ||
-        [...line.description].some((character) => character.charCodeAt(0) < 32) ||
+        [...line.description].some((character) =>
+          character.charCodeAt(0) < 32 ||
+          /[\u007F\u202A-\u202E\u2066-\u2069]/u.test(character)) ||
         !Number.isFinite(line.hours) || line.hours < 0 ||
         !Number.isFinite(line.hourlyRate) || line.hourlyRate < 0 ||
         !Number.isFinite(line.expenses ?? 0) || (line.expenses ?? 0) < 0) {
