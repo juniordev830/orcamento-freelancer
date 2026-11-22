@@ -161,7 +161,8 @@ export function createProposal(input: ProposalInput): Proposal {
     throw new RangeError('proposal must contain between 1 and 100 budget items');
   }
   const notes = input.notes ?? '';
-  if (typeof notes !== 'string' || notes.length > 1000 || /[\u0000-\u0008]/.test(notes)) {
+  if (typeof notes !== 'string' || notes.length > 1000 ||
+      /[\u0000-\u0008\u007F\u202A-\u202E\u2066-\u2069]/u.test(notes)) {
     throw new RangeError('notes must be text up to 1000 characters');
   }
 
