@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { calculateBudget, roundMoneyToCents } from '../src/calculator.js';
+import { calculateBudget, roundMoneyToCents, calculateInstallments } from '../src/calculator.js';
 
 test('calculates line items and discount', () => {
   assert.equal(calculateBudget([
@@ -57,4 +57,19 @@ test('rejects control characters or overly long item descriptions', () => {
   assert.throws(() => calculateBudget([{ ...line, description: 'A\nB' }]), RangeError);
   assert.throws(() => calculateBudget([{ ...line, description: 'A'.repeat(161) }]), RangeError);
   assert.equal(calculateBudget([{ ...line, description: 'A'.repeat(160) }]), 100);
+});
+
+test('splits the exact total into integer cents with deterministic remainder', () => {
+  assert.deepEqual(calculateInstallments(100, 3), [3334, 3333, 3333]);
+  assert.deepEqual(calculateInstallments(0.02, 3), [1, 1, 0]);
+  assert.deepEqual(calculateInstallments(10.075, 2), [504, 504]);
+  assert.equal(calculateInstallments(1234.56, 7).reduce((sum, cents) => sum + cents, 0), 123456);
+});
+
+test('rejects invalid installments and unsafe monetary amounts', () => {
+  for (const count of [0, 1.5, 121, Infinity]) {
+    assert.throws(() => calculateInstallments(100, count), RangeError);
+  }
+  assert.throws(() => calculateInstallments(-1, 2), RangeError);
+  assert.throws(() => calculateInstallments(1e15, 2), RangeError);
 });

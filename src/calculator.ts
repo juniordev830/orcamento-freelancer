@@ -79,3 +79,16 @@ export function calculateBudget(lines: BudgetLine[], discountPct = 0): number {
   if (!Number.isFinite(total)) throw new RangeError('budget total is not finite');
   return total;
 }
+
+/** Divide o valor em parcelas inteiras de centavos, sem perder centavos no total. */
+export function calculateInstallments(total: number, count: number): number[] {
+  if (!Number.isInteger(count) || count < 1 || count > 120) {
+    throw new RangeError('installment count must be between 1 and 120');
+  }
+  const cents = BigInt(roundMoneyToCents(total));
+  const divisor = BigInt(count);
+  const base = cents / divisor;
+  const remainder = cents % divisor;
+  return Array.from({ length: count }, (_, index) =>
+    Number(base + (BigInt(index) < remainder ? 1n : 0n)));
+}

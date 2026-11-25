@@ -71,3 +71,7 @@ Ainda não definida.
 O [guia de validação](docs/GUIA_DE_VALIDACAO.md) contém testes de regressão, pontos críticos e critérios para revisar a próxima alteração.
 \nA função utilitária `roundMoneyToCents` recusa valores cuja conversão para centavos ultrapasse a precisão inteira exata do JavaScript; a calculadora básica também valida a estrutura da lista e dos itens antes de iniciar operações monetárias.\n
 Descrições da calculadora básica aceitam até 160 caracteres não vazios e rejeitam controles como tabulação e quebra de linha; o mesmo limite já é aplicado às descrições de itens de propostas completas.
+
+## Parcelamento exato
+
+A função `calculateInstallments(total, count)` devolve as parcelas em centavos inteiros (1 a 120 parcelas), distribuindo os centavos restantes nas primeiras parcelas. Por exemplo, R$ 100 em 3 parcelas resulta em `[3334, 3333, 3333]`. Não inclui juros; é um utilitário de cálculo, não um checkout ou financiamento. Valores menores que a quantidade de parcelas podem gerar parcelas de zero centavo.
