@@ -22,7 +22,8 @@ export async function generate(sourceFile, destinationFile) {
 
   let input;
   try {
-    input = JSON.parse(await readFile(sourceFile, 'utf8'));
+    const text = await readFile(sourceFile, 'utf8');
+    input = JSON.parse(text.replace(/^\uFEFF/, ''));
   } catch (error) {
     if (error instanceof SyntaxError) {
       throw new SyntaxError('a proposta precisa ser um JSON válido');
